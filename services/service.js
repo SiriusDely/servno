@@ -14,14 +14,9 @@ module.exports = Service;
 
 Service.prototype = {
   createTask,
-  doSomething
+  doSomething,
+  listTasks
 };
-
-function doSomething() {
-  return Promise.resolve(
-    new Model({ key: 'hello', value: 'world' })
-  );
-}
 
 function createTask(data) {
   return Promise.resolve(
@@ -33,10 +28,29 @@ function createTask(data) {
     };
 
     return new Promise(function(resolve) {
-      dynamoDb.put(params, function(error) {
-        if (error) { throw error; }
+      dynamoDb.put(params, function(err) {
+        if (err) { throw err; }
         resolve(task);
       });
+    });
+  });
+}
+
+function doSomething() {
+  return Promise.resolve(
+    new Model({ key: 'hello', value: 'world' })
+  );
+}
+
+function listTasks() {
+  return new Promise(function(resolve) {
+    const params = {
+      TableName: process.env.DYNAMODB_TABLE
+    };
+
+    dynamoDb.scan(params, function(err, res) {
+      if (err) { throw err; }
+      resolve(res.Items);
     });
   });
 }

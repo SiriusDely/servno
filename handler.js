@@ -9,7 +9,8 @@ const service = new Service();
 
 module.exports = {
   create,
-  hello
+  hello,
+  list
 };
 
 async function create(event, context, callback) {
@@ -17,7 +18,7 @@ async function create(event, context, callback) {
     const json = JSON.parse(event.body);
     const result = await service.createTask(json);
     callback(null, response.ok({ data: result }));
-  } catch(err) {
+  } catch (err) {
     callback(err, response.serverError(err));
   }
 }
@@ -25,9 +26,17 @@ async function create(event, context, callback) {
 async function hello(event, context, callback) {
   try {
     const result = await service.doSomething();
-
     callback(null, response.ok({ data: result }));
-  } catch(err) {
+  } catch (err) {
+    callback(err, response.serverError(err));
+  }
+}
+
+async function list(event, context, callback) {
+  try {
+    const result = await service.listTasks();
+    callback(null, response.ok({ data: result }));
+  } catch (err) {
     callback(err, response.serverError(err));
   }
 }

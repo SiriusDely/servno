@@ -25,6 +25,10 @@ provider:
   memorySize: 128
   environment: ${self:custom}
 
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1
+
 # you can overwrite defaults here
 #  region: us-east-1
 
@@ -54,11 +58,6 @@ provider:
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 
-
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
-
 # you can add packaging information here
 
 functions:
@@ -74,14 +73,17 @@ functions:
       - http:
           path: tasks
           method: post
+  list:
+    handler: handler.list
+    events:
+      - http:
+          path: tasks
+          method: get
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
 #    events:
-#      - http:
-#          path: users/create
-#          method: get
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
 #      - sns: greeter-topic
