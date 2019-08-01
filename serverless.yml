@@ -79,6 +79,10 @@ functions:
       - http:
           path: tasks
           method: get
+  slugify:
+    handler: handler.stream
+    events:
+      - stream: ${self:provider.environment.STREAM_ARN}
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

@@ -10,7 +10,8 @@ const service = new Service();
 module.exports = {
   create,
   hello,
-  list
+  list,
+  stream
 };
 
 async function create(event, context, callback) {
@@ -39,4 +40,22 @@ async function list(event, context, callback) {
   } catch (err) {
     callback(err, response.serverError(err));
   }
+}
+
+function stream(event, context, callback) {
+  event.Records.forEach(function(record) {
+    console.log('SLUGIFY event', record);
+    console.log('SLUGIFY record', record.dynamodb);
+    if (record.eventName === 'INSERT') {
+      service.updateTask({
+        id: record.dynamodb.Keys.id.S,
+        name: record.dynamodb.NewImage.name.S
+      }, function(err, res) {
+        if (err) { return console.error('SLUGIFY INSERT ERR', err); }
+        console.log('SLUGIFY INSERT result', res);
+      });
+    }
+  });
+
+  return callback(null, `Successfully processed ${event.Records.length} records.`);
 }

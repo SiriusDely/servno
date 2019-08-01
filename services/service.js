@@ -15,7 +15,8 @@ module.exports = Service;
 Service.prototype = {
   createTask,
   doSomething,
-  listTasks
+  listTasks,
+  updateTask
 };
 
 function createTask(data) {
@@ -52,5 +53,25 @@ function listTasks() {
       if (err) { throw err; }
       resolve(res.Items);
     });
+  });
+}
+
+function updateTask(data, callback) {
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE,
+    Key: {
+      id: data.id
+    },
+    ExpressionAttributeValues: {
+      ':slug': data.name.trim().toLowerCase()
+        .replace(/[^\w ]+/g,'')
+        .replace(/ +/g,'-')   // simple approach
+    },
+    UpdateExpression: 'SET slug = :slug',
+    ReturnValues: 'ALL_NEW'
+  };
+
+  dynamoDb.update(params, function(err, res) {
+    callback(err, res);
   });
 }
