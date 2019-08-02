@@ -1,17 +1,19 @@
 'use strict';
 
 const requiredEnvVars = [
-    'SOME_ENV_VAR'
+  'DYNAMODB_TABLE',
+  'STREAM_ARN'
 ];
 
-if(
-    requiredEnvVars
-    .map(envVarName => process.env[envVarName])
-    .filter(envVar => envVar !== undefined).length < requiredEnvVars.length
+if (
+  requiredEnvVars
+  .map(envVarName => process.env[envVarName])
+  .filter(envVar => envVar !== undefined).length < requiredEnvVars.length
 ) {
-    throw new Error('Missing required env var');
+  throw new Error('Missing required env var');
 }
 
 module.exports = {
-    someEnvVar: process.env.SOME_ENV_VAR
+  dynamodbTable: process.env.DYNAMODB_TABLE,
+  streamArn: process.env.streamArn
 }
