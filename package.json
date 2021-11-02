@@ -1,0 +1,19 @@
+{
+  "name": "servno",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/siriusdely/servno.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/siriusdely/servno/issues"
+  },
+  "homepage": "https://github.com/siriusdely/servno#readme"
+}
